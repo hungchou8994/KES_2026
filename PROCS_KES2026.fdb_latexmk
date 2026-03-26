@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex PROCS_KES2026"] 1774491412.6157 "PROCS_KES2026.aux" "PROCS_KES2026.bbl" "PROCS_KES2026" 1774491887.15287 0
+["bibtex PROCS_KES2026"] 1774497764.53137 "PROCS_KES2026.aux" "PROCS_KES2026.bbl" "PROCS_KES2026" 1774497767.40811 0
   "./content/refs.bib" 1774424896 15825 aa74b026bd1609ed6736758d035fb616 ""
   "C:/Users/USER/AppData/Local/Programs/MiKTeX/bibtex/bst/elsarticle/elsarticle-num.bst" 1768130249 29462 dde4ec39bf78fded04ea32048bba0a74 ""
-  "PROCS_KES2026.aux" 1774491886 7969 2a90394db6dac8cc27f4ffe02dcd67a6 "pdflatex"
+  "PROCS_KES2026.aux" 1774497766 7969 d1fa48ae9a7667c5ad4ebd192fe92a5d "pdflatex"
   (generated)
   "PROCS_KES2026.bbl"
   "PROCS_KES2026.blg"
   (rewritten before read)
-["pdflatex"] 1774491884.91675 "d:/HCMUS/KLTN/PROC_KES2026/PROCS_KES2026_LATEX_Template/PROCS_KES2026.tex" "PROCS_KES2026.pdf" "PROCS_KES2026" 1774491887.15366 0
+["pdflatex"] 1774497765.03827 "d:/HCMUS/KLTN/PROC_KES2026/PROCS_KES2026_LATEX_Template/PROCS_KES2026.tex" "PROCS_KES2026.pdf" "PROCS_KES2026" 1774497767.40903 0
   "C:/Users/USER/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1774427166 84158 d77284a6843bde1e4b9764f09fb2e89e ""
   "C:/Users/USER/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1774426998 13333003 9432d0c67d82b580e1ffcb61c6b83ce1 ""
   "C:/Users/USER/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc" 1458473887 4993 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -154,20 +154,20 @@
   "C:/Users/USER/AppData/Local/Programs/MiKTeX/tex/latex/txfonts/utxsyc.fd" 977342760 310 4b5d6fe830337242ef847b3bff48ba21 ""
   "C:/Users/USER/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/USER/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1729265222 55384 b454dec21c2d9f45ec0b793f0995b992 ""
-  "PROCS_KES2026.aux" 1774491886 7969 2a90394db6dac8cc27f4ffe02dcd67a6 "pdflatex"
-  "PROCS_KES2026.bbl" 1774491412 7632 42faafd7015fda27d87d2b0f306d28b5 "bibtex PROCS_KES2026"
-  "PROCS_KES2026.spl" 1774491886 51 1c31cf29b3c9b96f0cefc8a173109f69 "pdflatex"
-  "PROCS_KES2026.tex" 1774427973 1691 211517c579dc4f3c3c1764544294452f ""
+  "PROCS_KES2026.aux" 1774497766 7969 d1fa48ae9a7667c5ad4ebd192fe92a5d "pdflatex"
+  "PROCS_KES2026.bbl" 1774497764 7632 42faafd7015fda27d87d2b0f306d28b5 "bibtex PROCS_KES2026"
+  "PROCS_KES2026.spl" 1774497766 51 1c31cf29b3c9b96f0cefc8a173109f69 "pdflatex"
+  "PROCS_KES2026.tex" 1774495173 1708 a1b5e49db33008fc9aef911c552d5842 ""
   "Procs.pdf" 1774424896 28756 e17afa13413176aa6e157dc53c5dc01b ""
   "SDlogo-3p.pdf" 1774424896 13111 fc1e8a13855056a699ede145d31993f2 ""
-  "content/abstract.tex" 1774491406 1603 8a89fe7592c5b17cfad623139d663dd0 ""
+  "content/abstract.tex" 1774497763 1337 a96ff6f280d78bea3f992596dc0d6a66 ""
   "content/acknowledgements.tex" 1774424896 144 79786cf966d8d68626ae626ba5642205 ""
-  "content/conclusion.tex" 1774491884 1640 4e369038d608d32864827615d98a8b56 ""
-  "content/experiments.tex" 1774491406 10317 57ce36979ace0a57c55b487807ca1906 ""
-  "content/introduction.tex" 1774491406 4029 58de7d85a0064d68a90dc77161638453 ""
-  "content/method.tex" 1774491406 9963 0efd8940ebafe2fb13ea7844367944f8 ""
-  "content/related_work.tex" 1774491406 4037 e27a44f865b6b4006fd41751f12ce9ec ""
-  "d:/HCMUS/KLTN/PROC_KES2026/PROCS_KES2026_LATEX_Template/PROCS_KES2026.tex" 1774427973 1691 211517c579dc4f3c3c1764544294452f ""
+  "content/conclusion.tex" 1774494850 1708 d555c63fd05846e4610d55901c9913b6 ""
+  "content/experiments.tex" 1774494741 10312 4352b0e4ac231cf4d28d8f7724455bff ""
+  "content/introduction.tex" 1774494850 4218 d5dbaf8fb956b6f5177cc56504e269cd ""
+  "content/method.tex" 1774494850 10271 8d36f0eff778ae44b06e5aab6bcb9802 ""
+  "content/related_work.tex" 1774493772 4037 e27a44f865b6b4006fd41751f12ce9ec ""
+  "d:/HCMUS/KLTN/PROC_KES2026/PROCS_KES2026_LATEX_Template/PROCS_KES2026.tex" 1774495173 1708 a1b5e49db33008fc9aef911c552d5842 ""
   "ecrc.sty" 1774424896 16258 30d911751ecfa6017bd3ab2c2e3c20e7 ""
   "elsarticle.cls" 1774424896 30856 8c445ad70a41e745921608b0ff6d2575 ""
   "elsevier-logo-3p.pdf" 1774424896 1496269 6d2701b6d282a90964ce5f7ec8b6bdcf ""
