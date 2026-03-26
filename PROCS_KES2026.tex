@@ -1,0 +1,74 @@
+\documentclass[3p,times,procedia]{elsarticle}
+\flushbottom
+
+\usepackage{ecrc}
+\usepackage[bookmarks=false]{hyperref}
+\hypersetup{colorlinks,linkcolor=blue,citecolor=blue,urlcolor=blue}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[figuresright]{rotating}
+\biboptions{numbers,sort&compress}
+\usepackage{graphicx}
+\usepackage{svg}
+\volume{00}
+\firstpage{1}
+\journalname{Procedia Computer Science}
+\runauth{Nguyen et al.}
+\jid{procs}
+
+\begin{document}
+\begin{frontmatter}
+
+\dochead{30th International Conference on Knowledge-Based and Intelligent Information \& Engineering Systems (KES 2026)}
+\title{Grounding Time: Temporally-Aware VideoQA System}
+
+
+\author[a,b]{Tan Hung Nguyen}
+% \ead{22120126@student.hcmus.edu.vn}
+
+
+\author[a,b]{Gia Hao Tran}
+% \ead{22120099@student.hcmus.edu.vn}
+
+
+
+\author[a,b]{Thanh Le\corref{cor1}}
+\ead{lnthanh@fit.hcmus.edu.vn}
+
+\address[a]{The Faculty of Information Technology, University of Science, Ho Chi Minh City, Vietnam}
+\address[b]{Vietnam National University, Ho Chi Minh City, Vietnam}
+
+\cortext[cor1]{Corresponding author.}
+
+\begin{abstract}
+\input{content/abstract}
+\end{abstract}
+
+\begin{keyword}
+Temporal video grounding \sep Grounded video question answering \sep Multimodal large language models \sep Video reasoning
+\end{keyword}
+
+\end{frontmatter}
+
+\section{Introduction}
+\input{content/introduction}
+
+\section{Related Work}
+\input{content/related_work}
+
+\section{Method}
+\input{content/method}
+
+\section{Experiments}
+\input{content/experiments}
+
+\section{Conclusion}
+\input{content/conclusion}
+
+\section*{Acknowledgements}
+\input{content/acknowledgements}
+
+\bibliographystyle{elsarticle-num}
+\bibliography{content/refs}
+
+\end{document}

@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="960" viewBox="0 0 1600 960">
+  <defs>
+    <style>
+      .bg { fill: #f6f3ed; }
+      .panel { fill: #ffffff; stroke: #21333f; stroke-width: 2.5; rx: 22; ry: 22; }
+      .soft { fill: #fbfaf7; stroke: #b7c0c6; stroke-width: 1.5; rx: 16; ry: 16; }
+      .nodeA { fill: #fff0dd; stroke: #c78a2c; stroke-width: 2; rx: 18; ry: 18; }
+      .nodeB { fill: #e5f3ff; stroke: #4f89b5; stroke-width: 2; rx: 18; ry: 18; }
+      .nodeC { fill: #ebf7ec; stroke: #4f8e5d; stroke-width: 2; rx: 18; ry: 18; }
+      .nodeD { fill: #f6eaf2; stroke: #9f5f84; stroke-width: 2; rx: 18; ry: 18; }
+      .timeline { fill: #f3f5f6; stroke: #8b979e; stroke-width: 1.5; rx: 14; ry: 14; }
+      .title { font: 700 30px Georgia, 'Times New Roman', serif; fill: #15232d; }
+      .subtitle { font: 700 20px Georgia, 'Times New Roman', serif; fill: #15232d; }
+      .body { font: 16px Arial, Helvetica, sans-serif; fill: #1b2b33; }
+      .small { font: 14px Arial, Helvetica, sans-serif; fill: #4c5c64; }
+      .tiny { font: 13px Arial, Helvetica, sans-serif; fill: #4c5c64; }
+      .tag { font: 700 13px Arial, Helvetica, sans-serif; fill: #ffffff; }
+      .tagbox { fill: #21333f; rx: 10; ry: 10; }
+      .answer { fill: #123a29; }
+      .white { fill: #ffffff; }
+      .muted { fill: #5b6970; }
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#425863"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1600" height="960"/>
+
+  <text x="56" y="62" class="title">Overview of the Refiner-Retriever-Selector-Generator framework</text>
+  <text x="56" y="92" class="body">The system converts multiple-choice answer options into retrieval-friendly evidence queries, retrieves candidate moments, verifies the most faithful clip, and answers from the selected evidence instead of the full video.</text>
+
+  <rect class="panel" x="50" y="130" width="310" height="760"/>
+  <text x="78" y="170" class="subtitle">Input</text>
+
+  <rect class="soft" x="76" y="194" width="258" height="86"/>
+  <text x="94" y="222" class="small">Video</text>
+  <rect x="94" y="238" width="220" height="20" fill="#d9dee1" rx="10" ry="10"/>
+  <rect x="170" y="238" width="58" height="20" fill="#6a7f8c" rx="10" ry="10"/>
+  <text x="94" y="270" class="tiny">Long video with dispersed temporal evidence</text>
+
+  <rect class="soft" x="76" y="300" width="258" height="90"/>
+  <text x="94" y="328" class="small">Question</text>
+  <text x="94" y="354" class="body">Why does the woman run back</text>
+  <text x="94" y="377" class="body">to the kitchen table?</text>
+
+  <rect class="soft" x="76" y="410" width="258" height="248"/>
+  <text x="94" y="438" class="small">Answer options</text>
+  <text x="94" y="470" class="body">A  She forgot her phone.</text>
+  <text x="94" y="512" class="body">B  She hears the kettle</text>
+  <text x="120" y="535" class="body">boiling.</text>
+  <text x="94" y="577" class="body">C  She wants to close</text>
+  <text x="120" y="600" class="body">the window.</text>
+  <text x="94" y="642" class="body">D  She is calling a friend.</text>
+
+  <rect class="soft" x="76" y="684" width="258" height="170"/>
+  <text x="94" y="712" class="small">Core challenge</text>
+  <text x="94" y="742" class="body">Raw options are useful for</text>
+  <text x="94" y="765" class="body">discrimination, but weak as</text>
+  <text x="94" y="788" class="body">queries for temporal evidence</text>
+  <text x="94" y="811" class="body">retrieval.</text>
+
+  <rect class="nodeA" x="412" y="156" width="270" height="196"/>
+  <rect class="tagbox" x="432" y="174" width="82" height="24"/>
+  <text x="449" y="191" class="tag">REFINER</text>
+  <text x="436" y="230" class="body">Rewrites each answer option into</text>
+  <text x="436" y="253" class="body">a grounding-friendly evidence query.</text>
+  <rect class="soft" x="434" y="278" width="226" height="52"/>
+  <text x="448" y="300" class="tiny">Example refined query</text>
+  <text x="448" y="320" class="tiny">"the kettle begins boiling and she</text>
+  <text x="448" y="338" class="tiny">immediately runs back after hearing it"</text>
+
+  <rect class="nodeB" x="760" y="130" width="356" height="288"/>
+  <rect class="tagbox" x="782" y="148" width="96" height="24"/>
+  <text x="802" y="165" class="tag">RETRIEVER</text>
+  <text x="786" y="205" class="body">Given each refined query, the retriever</text>
+  <text x="786" y="228" class="body">localizes top-K candidate temporal spans.</text>
+  <rect class="timeline" x="786" y="258" width="304" height="48"/>
+  <line x1="818" y1="282" x2="1058" y2="282" stroke="#66777f" stroke-width="4"/>
+  <rect x="878" y="270" width="56" height="24" fill="#8eb8d6" rx="10" ry="10"/>
+  <rect x="962" y="270" width="72" height="24" fill="#4f89b5" rx="10" ry="10"/>
+  <text x="788" y="336" class="small">Outputs</text>
+  <text x="788" y="360" class="body">For option B: [11s, 15s], [13s, 17s]</text>
+  <text x="788" y="386" class="tiny">Candidate clips are plausible, but not equally faithful.</text>
+
+  <rect class="nodeC" x="760" y="466" width="356" height="240"/>
+  <rect class="tagbox" x="782" y="484" width="88" height="24"/>
+  <text x="800" y="501" class="tag">SELECTOR</text>
+  <text x="786" y="541" class="body">Verifies all retrieved clips and picks the</text>
+  <text x="786" y="564" class="body">most reliable evidence for the question.</text>
+  <rect class="soft" x="786" y="592" width="304" height="88"/>
+  <text x="804" y="617" class="body">A1  0.21</text>
+  <text x="804" y="642" class="body">B1  0.62</text>
+  <text x="804" y="667" class="body">B2  0.93</text>
+  <text x="930" y="642" class="tiny">Highest verification score</text>
+
+  <rect class="nodeD" x="1192" y="306" width="336" height="218"/>
+  <rect class="tagbox" x="1214" y="324" width="104" height="24"/>
+  <text x="1236" y="341" class="tag">GENERATOR</text>
+  <text x="1218" y="382" class="body">Answers the question conditioned on</text>
+  <text x="1218" y="405" class="body">the selected evidence clip, not the</text>
+  <text x="1218" y="428" class="body">entire video.</text>
+  <rect class="soft" x="1218" y="452" width="282" height="46"/>
+  <text x="1234" y="480" class="body">Input clip: [13s, 17s]</text>
+
+  <rect class="panel" x="1192" y="592" width="336" height="196"/>
+  <text x="1218" y="632" class="subtitle">Output</text>
+  <rect x="1218" y="656" width="280" height="36" fill="#edf7ef" stroke="#4f8e5d" stroke-width="2" rx="12" ry="12"/>
+  <text x="1234" y="679" class="body">Selected evidence span: [13s, 17s]</text>
+  <rect x="1218" y="708" width="280" height="36" class="answer" rx="12" ry="12"/>
+  <text x="1234" y="731" class="tag">Predicted answer: B  She hears the kettle boiling.</text>
+  <text x="1218" y="770" class="small">Grounded prediction comes from explicit evidence,</text>
+  <text x="1218" y="792" class="small">not from language priors over the options.</text>
+
+  <line x1="362" y1="520" x2="410" y2="254" stroke="#425863" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="682" y1="254" x2="758" y2="254" stroke="#425863" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="938" y1="418" x2="938" y2="464" stroke="#425863" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="1118" y1="586" x2="1190" y2="448" stroke="#425863" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="1360" y1="526" x2="1360" y2="590" stroke="#425863" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <rect class="soft" x="412" y="760" width="704" height="102"/>
+  <text x="438" y="792" class="subtitle">Design intuition</text>
+  <text x="438" y="822" class="body">Refiner resolves the mismatch between answer formulation and retrieval. Retriever acquires candidate evidence, Selector verifies faithfulness, and Generator performs final grounded reasoning over the selected clip.</text>
+</svg>

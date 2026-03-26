@@ -1,0 +1,124 @@
+\subsection{Experimental Setup}
+\label{sec:exp_setup}
+
+\textbf{Benchmarks.}
+We evaluate our framework on two temporally grounded VideoQA benchmarks, \textbf{NExT-GQA} \cite{xiao2024can} and \textbf{ReXTime} \cite{chen2024rextime}. NExT-GQA emphasizes visually grounded answering, requiring the model to predict the correct answer while localizing the supporting temporal evidence \cite{xiao2024can}. ReXTime focuses on reasoning across time, where the evidence required for answering may lie in a temporal region different from that implied by the question context \cite{chen2024rextime}.
+
+\textbf{Evaluation metrics.}
+For NExT-GQA, following prior work \cite{xiao2024can,liu2025videomind}, we report both IoP-based and IoU-based grounding metrics, including mIoP, IoP@0.3, IoP@0.5, mIoU, IoU@0.3, and IoU@0.5, together with Acc@GQA (IoP$>$0.5) and Acc@QA. For ReXTime, following the benchmark protocol \cite{chen2024rextime}, we report R@0.3, R@0.5, mIoU, Acc, and Acc@IoU=0.5.
+
+\textbf{Baselines.}
+On NExT-GQA, we compare against representative grounded or temporally aware VideoQA methods, including FrozenBiLMNG+ \cite{yang2022zero}, VTimeLLM \cite{huang2024vtimellm}, SeViLA \cite{yu2023sevila}, LangRepo \cite{kahatapitiya2025language}, VideoStreaming \cite{qian2024streaming}, Grounded-VideoLLM \cite{wang2025grounded_videollm}, VideoExpert \cite{zhao2025videoexpert}, VideoChat-TPO \cite{yan2025tpo}, LLoVi \cite{zhang2024simple}, HawkEye \cite{wang2024hawkeye}, DeVi \cite{qin2025question_answering_dense_video_events}, and VideoMind \cite{liu2025videomind}. On ReXTime, we compare against VTimeLLM \cite{huang2024vtimellm}, TimeChat \cite{ren2024timechat}, LITA \cite{huang2024lita}, and VideoMind \cite{liu2025videomind}. Unless otherwise noted, all baseline results are taken from the corresponding original papers.
+
+\textbf{Implementation details.}
+Our framework consists of four modules: a Refiner, a Retriever, a Validator, and a Generator. The Refiner uses Gemini 2.5 Flash and is applied without additional training. The Retriever is initialized from Qwen3-VL-8B and fine-tuned on TimeLens-100K with a three-stage training pipeline consisting of SFT warm-start, offline filtering, and GRPO-based optimization. The Validator is built on Qwen2-VL-7B and trained with LoRA-based supervised fine-tuning following the verifier design of VideoMind \cite{liu2025videomind}. The Generator is implemented with Qwen2-VL \cite{wang2024qwen2} and is used without additional fine-tuning. In all experiments, we set $K=2$, where the Retriever generates two candidate temporal spans for each refined query, the Validator scores and ranks these candidates, and the Generator receives the highest-ranked clip for downstream reasoning. Table~\ref{tab:module_training} summarizes the training configuration of the trainable modules.
+
+
+
+\begin{table}[!htbp]
+\caption{Training configuration of the trainable modules in our framework.}
+\label{tab:module_training}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llll}
+\hline
+Module & Backbone & Training data & Training strategy \\
+\hline
+Retriever & Qwen3-VL-8B & TimeLens-100K & SFT $\rightarrow$ Filter $\rightarrow$ GRPO \\
+Validator & Qwen2-VL-7B & DiDeMo, TACoS, QVHighlights & LoRA-based SFT \\
+\hline
+\end{tabular}
+\end{table}
+\subsection{Main Results}
+\label{sec:main_results}
+
+\begin{table}[t]
+\caption{Results on NExT-GQA. PT denotes trained/pretrained models, and TF denotes training-free models. Best results are in bold.}
+\label{tab:nextgqa_results}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lccccccccc}
+\hline
+Method & Paradigm & mIoP & IoP@0.3 & IoP@0.5 & mIoU & IoU@0.3 & IoU@0.5 & Acc@GQA & Acc@QA \\
+\hline
+FrozenBiLMNG+ \cite{yang2022zero} & PT & 24.2 & 28.5 & 23.7 & 9.6 & 13.5 & 6.1 & 17.5 & 70.8 \\
+VTimeLLM \cite{huang2024vtimellm} & PT & 27.9 & 30.3 & 23.8 & 18.3 & 27.7 & 14.1 & 12.7 & -- \\
+SeViLA \cite{yu2023sevila} & PT & 29.5 & 34.7 & 22.9 & 21.7 & 29.2 & 13.8 & 16.6 & 68.1 \\
+LangRepo \cite{kahatapitiya2025language} & PT & 31.3 & -- & 28.7 & 18.5 & -- & 12.2 & 17.1 & -- \\
+VideoStreaming \cite{qian2024streaming} & -- & 32.2 & -- & 31.0 & 19.3 & -- & 13.3 & 17.8 & -- \\
+Grounded-VideoLLM \cite{wang2025grounded_videollm} & PT & 34.5 & 42.6 & 34.4 & 21.1 & 30.2 & 18.0 & 26.7 & -- \\
+VideoExpert \cite{zhao2025videoexpert} & PT & 34.6 & 45.3 & 29.3 & 27.9 & 41.0 & 22.4 & 21.6 & 71.1 \\
+VideoChat-TPO \cite{yan2025tpo} & PT & 35.6 & 47.5 & 32.8 & 27.7 & 41.2 & 23.4 & 25.5 & -- \\
+LLoVi \cite{zhang2024simple} & PT & 37.3 & -- & 36.9 & 20.0 & -- & 15.3 & 24.3 & -- \\
+HawkEye \cite{wang2024hawkeye} & PT & -- & -- & -- & 25.7 & 37.0 & 19.5 & -- & -- \\
+DeVi \cite{qin2025question_answering_dense_video_events} & TF & 39.7 & -- & 38.9 & 23.6 & -- & 19.5 & 28.9 & 73.1 \\
+VideoMind \cite{liu2025videomind} & PT & 39.0 & \textbf{56.0} & 35.3 & 31.4 & \textbf{50.2} & 25.8 & 28.2 & 76.9 \\
+\hline
+\textbf{Ours} & PT & \textbf{41.76} & 54.13 & \textbf{39.02} & \textbf{34.86} & 49.88 & \textbf{31.57} & \textbf{31.05} & \textbf{77.0} \\
+\hline
+\end{tabular}
+\end{table}
+
+
+
+As shown in Table~\ref{tab:nextgqa_results}, our method achieves the best overall performance among the compared methods on NExT-GQA, with particularly clear gains on strict grounding-aware metrics. Specifically, compared with the strongest prior baseline, VideoMind~\cite{liu2025videomind}, our method improves mIoU by 3.46\%, IoU@0.5 by 5.77\%, and Acc@GQA by 2.85\%, while also achieving the best mIoP and IoP@0.5.
+
+A notable pattern is that our method performs slightly below VideoMind on the looser thresholds IoP@0.3 and IoU@0.3, but consistently outperforms it on the stricter thresholds IoP@0.5 and IoU@0.5. This suggests that the proposed framework improves precise temporal localization rather than only coarse overlap. Since NExT-GQA explicitly evaluates whether predicted answers are supported by correct temporal evidence~\cite{xiao2024can}, these results indicate better alignment between answer prediction and grounded temporal evidence.
+
+
+
+\begin{table}[t]
+\caption{Results on ReXTime. FT indicates the fine-tuned setting reported by prior work. Best results are in bold.}
+\label{tab:rextime_results}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lccccccc}
+\hline
+Method & Size & FT & R@0.3 & R@0.5 & mIoU & Acc & Acc@IoU=0.5 \\
+\hline
+VTimeLLM \cite{huang2024vtimellm} & 7B & \checkmark & 43.69 & 26.13 & 29.92 & 57.58 & 17.13 \\
+TimeChat \cite{ren2024timechat} & 7B & \checkmark & 40.13 & 21.42 & 26.29 & 49.46 & 10.92 \\
+VTimeLLM \cite{huang2024vtimellm} & 7B & -- & 28.84 & 17.41 & 20.14 & 36.16 & -- \\
+TimeChat \cite{ren2024timechat} & 7B & -- & 14.42 & 7.61 & 11.65 & 40.04 & -- \\
+LITA \cite{huang2024lita} & 13B & -- & 29.49 & 16.29 & 21.49 & 34.44 & -- \\
+VideoMind \cite{liu2025videomind} & 7B & -- & 38.22 & 25.52 & 27.61 & \textbf{74.59} & 20.20 \\
+\hline
+\textbf{Ours} & 8B & -- & \textbf{46.91} & \textbf{35.94} & \textbf{36.99} & \textbf{74.59} & \textbf{27.25} \\
+\hline
+\end{tabular}
+\end{table}
+
+As shown in Table~\ref{tab:rextime_results}, our method delivers the best grounding performance among the compared methods on ReXTime, achieving the highest R@0.3, R@0.5, and mIoU, while matching the best answer accuracy. In particular, compared with VideoMind~\cite{liu2025videomind}, our method improves mIoU by 9.38\% and Acc@IoU=0.5 by 7.05\%.
+
+This result is especially important on ReXTime, where answering correctly requires identifying temporally displaced evidence~\cite{chen2024rextime}. In this setting, answer accuracy alone is insufficient; the model must also retrieve the correct answer-supporting span. The gains on both retrieval metrics and Acc@IoU=0.5 therefore suggest that our framework is more effective at linking answer-relevant temporal evidence to final predictions. Taken together, the results on NExT-GQA and ReXTime show that our method is particularly effective under strict grounding-aware evaluation, where answer correctness and evidence quality must be satisfied jointly.
+
+\subsection{Ablation Study}
+\label{sec:ablation}
+
+We conduct ablations on ReXTime~\cite{chen2024rextime}, which offers a particularly discriminative testbed due to its reasoning-across-time nature. Table~\ref{tab:ablation_rextime_modules} compares three variants: a Generator-only baseline, a Retriever--Validator--Generator pipeline without the Refiner, and the full model.
+
+\begin{table}[!htbp]
+\caption{Ablation results on ReXTime. Ref, Ret, Val, and Gen denote Refiner, Retriever, Validator, and Generator, respectively. The Generator-only variant does not produce temporal evidence spans, so grounding metrics are not reported.}
+\label{tab:ablation_rextime_modules}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{ccccccccc}
+\hline
+Ref & Ret & Val & Gen & R@0.3 & R@0.5 & mIoU & Acc & Acc@IoU=0.5 \\
+\hline
+-- & -- & -- & \checkmark & -- & -- & -- & 68.00 & -- \\
+-- & \checkmark & \checkmark & \checkmark & 33.01 & 25.19 & 27.17 & 73.24 & 19.22 \\
+\checkmark & \checkmark & \checkmark & \checkmark & 46.91 & 35.94 & 36.99 & 74.59 & 27.25 \\
+\hline
+\end{tabular}
+\end{table}
+
+As shown in Table~\ref{tab:ablation_rextime_modules}, the ablation study yields two clear observations. First, introducing explicit evidence retrieval and selection already provides a strong improvement over direct generation, raising answer accuracy from 68.00 to 73.24. This indicates that ReXTime cannot be solved reliably by generation alone, since correct answers often depend on evidence located at temporally displaced moments.
+
+Second, the Refiner brings an additional and consistent gain across all reported metrics. Relative to the Retriever--Validator--Generator variant, the full model improves R@0.3 by 13.90\%, R@0.5 by 10.75\%, mIoU by 9.82\%, and Acc@IoU=0.5 by 8.03\%, while also increasing Acc from 73.24\% to 74.59\%. These results suggest that the Refiner improves the quality of the evidence supplied to downstream modules, resulting in more precise temporal grounding and stronger grounded question answering.
+
+Overall, the ablation study confirms that the effectiveness of the full framework does not arise from generation alone, but from progressively improving evidence quality through the Refiner--Retriever--Validator--Generator pipeline.
