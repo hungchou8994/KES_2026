@@ -11,7 +11,7 @@ For NExT-GQA, following prior work \cite{xiao2024can,liu2025videomind}, we repor
 On NExT-GQA, we compare against representative grounded or temporally aware VideoQA methods, including FrozenBiLMNG+ \cite{yang2022zero}, VTimeLLM \cite{huang2024vtimellm}, SeViLA \cite{yu2023sevila}, LangRepo \cite{kahatapitiya2025language}, VideoStreaming \cite{qian2024streaming}, Grounded-VideoLLM \cite{wang2025grounded_videollm}, VideoExpert \cite{zhao2025videoexpert}, VideoChat-TPO \cite{yan2025tpo}, LLoVi \cite{zhang2024simple}, HawkEye \cite{wang2024hawkeye}, DeVi \cite{qin2025question_answering_dense_video_events}, and VideoMind \cite{liu2025videomind}. On ReXTime, we compare against VTimeLLM \cite{huang2024vtimellm}, TimeChat \cite{ren2024timechat}, LITA \cite{huang2024lita}, and VideoMind \cite{liu2025videomind}. Unless otherwise noted, all baseline results are taken from the corresponding original papers.
 
 \textbf{Implementation details.}
-EviR-Vid consists of four modules: a Refiner, a Retriever, a Validator, and a Generator. The Refiner uses Gemini 2.5 Flash and is applied without additional training. The Retriever is initialized from Qwen3-VL-8B and fine-tuned on TimeLens-100K with a three-stage training pipeline consisting of SFT warm-start, offline filtering, and GRPO-based optimization. The Validator is built on Qwen2-VL-7B and trained with LoRA-based supervised fine-tuning following the verifier design of VideoMind \cite{liu2025videomind}. The Generator is implemented with Qwen2-VL \cite{wang2024qwen2} and is used without additional fine-tuning. In all experiments, we set $K=2$, where the Retriever generates two candidate temporal spans for each refined query, the Validator scores and ranks these candidates, and the Generator receives the highest-ranked clip for downstream reasoning. Table~\ref{tab:module_training} summarizes the training configuration of the trainable modules.
+EviR consists of four modules: a Refiner, a Retriever, a Validator, and a Generator. The Refiner uses Gemini 2.5 Flash and is applied without additional training. The Retriever is initialized from Qwen3-VL-8B and fine-tuned on TimeLens-100K with a three-stage training pipeline consisting of SFT warm-start, offline filtering, and GRPO-based optimization. The Validator is built on Qwen2-VL-7B and trained with LoRA-based supervised fine-tuning following the verifier design of VideoMind \cite{liu2025videomind}. The Generator is implemented with Qwen2-VL \cite{wang2024qwen2} and is used without additional fine-tuning. In all experiments, we set $K=2$, where the Retriever generates two candidate temporal spans for each refined query, the Validator scores and ranks these candidates, and the Generator receives the highest-ranked clip for downstream reasoning. Table~\ref{tab:module_training} summarizes the training configuration of the trainable modules.
 
 
 
@@ -112,6 +112,7 @@ Ref & Ret & Val & Gen & R@0.3 & R@0.5 & mIoU & Acc & Acc@IoU=0.5 \\
 \hline
 -- & -- & -- & \checkmark & -- & -- & -- & 68.00 & -- \\
 -- & \checkmark & \checkmark & \checkmark & 33.01 & 25.19 & 27.17 & 73.24 & 19.22 \\
+\checkmark & \checkmark & \checkmark & -- & 46.91 & 35.94 & 36.99 & 32.68 & 18.68 \\
 \checkmark & \checkmark & \checkmark & \checkmark & 46.91 & 35.94 & 36.99 & 74.59 & 27.25 \\
 \hline
 \end{tabular}
