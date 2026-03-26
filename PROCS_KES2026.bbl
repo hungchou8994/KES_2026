@@ -125,6 +125,11 @@ H.~Zhao, G.-P. Ji, R.~Yan, H.~Xiong, Z.~Li, Videoexpert: Augmented llm for
 \newblock \href {https://doi.org/10.1109/TCSVT.2026.3653742}
   {\path{doi:10.1109/TCSVT.2026.3653742}}.
 
+\bibitem{shao2024deepseekmath}
+Z.~Shao, P.~Wang, Q.~Zhu, R.~Xu, J.~Song, X.~Bi, H.~Zhang, M.~Zhang, Y.~Li,
+  Y.~Wu, et~al., Deepseekmath: Pushing the limits of mathematical reasoning in
+  open language models, arXiv preprint arXiv:2402.03300 (2024).
+
 \bibitem{wang2024qwen2}
 P.~Wang, S.~Bai, S.~Tan, S.~Wang, Z.~Fan, J.~Bai, K.~Chen, X.~Liu, J.~Wang,
   W.~Ge, et~al., Qwen2-vl: Enhancing vision-language model's perception of the

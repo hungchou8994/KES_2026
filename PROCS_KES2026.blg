@@ -9,45 +9,45 @@ Warning--empty pages in liu2025videomind
 Warning--can't use both volume and number fields in xu2025zero
 Warning--empty pages in wang2025timer1
 Warning--empty pages in zhang2026timelens
-You've used 25 entries,
+You've used 26 entries,
             2952 wiz_defined-function locations,
-            807 strings with 11622 characters,
-and the built_in function-call counts, 11375 in all, are:
-= -- 991
-> -- 547
+            811 strings with 11919 characters,
+and the built_in function-call counts, 11705 in all, are:
+= -- 1011
+> -- 581
 < -- 15
-+ -- 199
-- -- 174
-* -- 802
-:= -- 1513
-add.period$ -- 29
-call.type$ -- 25
-change.case$ -- 27
++ -- 211
+- -- 185
+* -- 827
+:= -- 1573
+add.period$ -- 30
+call.type$ -- 26
+change.case$ -- 28
 chr.to.int$ -- 0
-cite$ -- 29
-duplicate$ -- 403
-empty$ -- 1185
-format.name$ -- 199
-if$ -- 2899
+cite$ -- 30
+duplicate$ -- 411
+empty$ -- 1211
+format.name$ -- 211
+if$ -- 2976
 int.to.chr$ -- 0
-int.to.str$ -- 25
-missing$ -- 25
-newline$ -- 89
-num.names$ -- 25
-pop$ -- 216
+int.to.str$ -- 26
+missing$ -- 26
+newline$ -- 92
+num.names$ -- 26
+pop$ -- 222
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 736
+skip$ -- 754
 stack$ -- 0
 substring$ -- 699
-swap$ -- 168
+swap$ -- 169
 text.length$ -- 15
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 4
-while$ -- 74
-width$ -- 27
-write$ -- 234
+while$ -- 75
+width$ -- 28
+write$ -- 242
 (There were 4 warnings)

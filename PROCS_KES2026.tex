@@ -7,7 +7,8 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage[figuresright]{rotating}
-\biboptions{numbers,sort&compress}
+\biboptions{numbers,sort}
+\bibpunct{[}{]}{,}{n}{}{,}
 \usepackage{graphicx}
 \usepackage{svg}
 \volume{00}
@@ -51,18 +52,23 @@ Temporal video grounding \sep Grounded video question answering \sep Multimodal 
 \end{frontmatter}
 
 \section{Introduction}
+\label{sec:introduction}
 \input{content/introduction}
 
 \section{Related Work}
+\label{sec:related_work}
 \input{content/related_work}
 
-\section{Method}
+\section{Methodology}
+\label{sec:method}
 \input{content/method}
 
 \section{Experiments}
+\label{sec:experiments}
 \input{content/experiments}
 
 \section{Conclusion}
+\label{sec:conclusion}
 \input{content/conclusion}
 
 \section*{Acknowledgements}

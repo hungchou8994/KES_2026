@@ -7,26 +7,23 @@
 \Newlabel{cor1}{1}
 \citation{xiao2024can}
 \citation{chen2024rextime}
+\citation{tang2025video,wu2025survey_vtg_mllm}
+\citation{huang2024vtimellm,ren2024timechat,wang2025grounded_videollm}
+\citation{yu2023sevila,zhang2024simple,liu2025videomind}
 \Newlabel{a}{a}
 \Newlabel{b}{b}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
-\citation{tang2025video,wu2025survey_vtg_mllm}
-\citation{huang2024vtimellm}
-\citation{ren2024timechat}
-\citation{wang2025grounded_videollm}
-\citation{yu2023sevila}
-\citation{zhang2024simple}
-\citation{liu2025videomind}
-\citation{xiao2024can,chen2024rextime}
+\newlabel{sec:introduction}{{1}{1}{Introduction}{section.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Illustration of the mismatch between answer formulation and temporal grounding. Raw answer candidates are often abstract and not well suited for retrieval, leading to inaccurate evidence localization. Query refinement converts answer candidates into more visually localized descriptions, enabling better temporal grounding.}}{2}{figure.1}\protected@file@percent }
+\newlabel{fig:mismatch_refinement}{{1}{2}{Illustration of the mismatch between answer formulation and temporal grounding. Raw answer candidates are often abstract and not well suited for retrieval, leading to inaccurate evidence localization. Query refinement converts answer candidates into more visually localized descriptions, enabling better temporal grounding}{figure.1}{}}
 \citation{wu2025survey_vtg_mllm}
 \citation{huang2024vtimellm}
 \citation{ren2024timechat}
 \citation{huang2024lita}
 \citation{wang2025grounded_videollm}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Temporal Video Grounding}{2}{subsection.2.1}\protected@file@percent }
 \citation{zheng2024training,xu2025zero,qu2024chatvtg}
-\citation{wang2025timer1,zhang2026timelens}
+\citation{wang2025timer1}
+\citation{zhang2026timelens}
 \citation{xiao2024can}
 \citation{xiao2024can}
 \citation{chen2024rextime}
@@ -35,22 +32,29 @@
 \citation{zhang2024simple,kahatapitiya2025language,qian2024streaming}
 \citation{zhao2025videoexpert,liu2025videomind}
 \citation{xiao2024can,chen2024rextime}
-\citation{xiao2024can,chen2024rextime}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{3}{section.2}\protected@file@percent }
+\newlabel{sec:related_work}{{2}{3}{Related Work}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Temporal Video Grounding}{3}{subsection.2.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Grounded and Reasoning VideoQA}{3}{subsection.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3}Method}{3}{section.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Overview}{3}{subsection.3.1}\protected@file@percent }
-\newlabel{sec:method_overview}{{3.1}{3}{Overview}{subsection.3.1}{}}
+\citation{xiao2024can,chen2024rextime}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Overview of EviR. The framework reformulates answer candidates into evidence queries, retrieves candidate temporal spans, validates their evidence reliability, and predicts the final answer from the highest-ranked evidence clip.}}{4}{figure.2}\protected@file@percent }
+\newlabel{fig:evir_overview}{{2}{4}{Overview of EviR. The framework reformulates answer candidates into evidence queries, retrieves candidate temporal spans, validates their evidence reliability, and predicts the final answer from the highest-ranked evidence clip}{figure.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Methodology}{4}{section.3}\protected@file@percent }
+\newlabel{sec:method}{{3}{4}{Methodology}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}General}{4}{subsection.3.1}\protected@file@percent }
+\newlabel{sec:method_overview}{{3.1}{4}{General}{subsection.3.1}{}}
 \citation{zhang2026timelens}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Refiner}{4}{subsection.3.2}\protected@file@percent }
-\newlabel{sec:refiner}{{3.2}{4}{Refiner}{subsection.3.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Retriever}{4}{subsection.3.3}\protected@file@percent }
-\newlabel{sec:retriever}{{3.3}{4}{Retriever}{subsection.3.3}{}}
+\citation{shao2024deepseekmath}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Refiner}{5}{subsection.3.2}\protected@file@percent }
+\newlabel{sec:refiner}{{3.2}{5}{Refiner}{subsection.3.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Retriever}{5}{subsection.3.3}\protected@file@percent }
+\newlabel{sec:retriever}{{3.3}{5}{Retriever}{subsection.3.3}{}}
 \citation{liu2025videomind}
 \citation{liu2025videomind}
 \citation{liu2025videomind}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Validator}{6}{subsection.3.4}\protected@file@percent }
+\newlabel{sec:validator}{{3.4}{6}{Validator}{subsection.3.4}{}}
 \citation{xiao2024can,liu2025videomind}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Validator}{5}{subsection.3.4}\protected@file@percent }
-\newlabel{sec:validator}{{3.4}{5}{Validator}{subsection.3.4}{}}
 \citation{wang2024qwen2}
 \citation{xiao2024can,liu2025videomind}
 \citation{xiao2024can}
@@ -59,6 +63,12 @@
 \citation{chen2024rextime}
 \citation{xiao2024can,liu2025videomind}
 \citation{chen2024rextime}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Generator}{7}{subsection.3.5}\protected@file@percent }
+\newlabel{sec:generator}{{3.5}{7}{Generator}{subsection.3.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experiments}{7}{section.4}\protected@file@percent }
+\newlabel{sec:experiments}{{4}{7}{Experiments}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Experimental Setup}{7}{subsection.4.1}\protected@file@percent }
+\newlabel{sec:exp_setup}{{4.1}{7}{Experimental Setup}{subsection.4.1}{}}
 \citation{yang2022zero}
 \citation{huang2024vtimellm}
 \citation{yu2023sevila}
@@ -89,13 +99,7 @@
 \citation{wang2024hawkeye}
 \citation{qin2025question_answering_dense_video_events}
 \citation{liu2025videomind}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Generator}{6}{subsection.3.5}\protected@file@percent }
-\newlabel{sec:generator}{{3.5}{6}{Generator}{subsection.3.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Experiments}{6}{section.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Experimental Setup}{6}{subsection.4.1}\protected@file@percent }
-\newlabel{sec:exp_setup}{{4.1}{6}{Experimental Setup}{subsection.4.1}{}}
 \citation{liu2025videomind}
-\citation{xiao2024can}
 \citation{huang2024vtimellm}
 \citation{ren2024timechat}
 \citation{huang2024vtimellm}
@@ -105,24 +109,25 @@
 \citation{liu2025videomind}
 \citation{chen2024rextime}
 \citation{chen2024rextime}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Training configuration of the trainable modules in our framework.}}{7}{table.1}\protected@file@percent }
-\newlabel{tab:module_training}{{1}{7}{Training configuration of the trainable modules in our framework}{table.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Results on NExT-GQA. PT denotes trained/pretrained models, and TF denotes training-free models. Best results are in bold.}}{7}{table.2}\protected@file@percent }
-\newlabel{tab:nextgqa_results}{{2}{7}{Results on NExT-GQA. PT denotes trained/pretrained models, and TF denotes training-free models. Best results are in bold}{table.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Results on ReXTime. FT indicates the fine-tuned setting reported by prior work. Best results are in bold.}}{7}{table.3}\protected@file@percent }
-\newlabel{tab:rextime_results}{{3}{7}{Results on ReXTime. FT indicates the fine-tuned setting reported by prior work. Best results are in bold}{table.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Main Results}{7}{subsection.4.2}\protected@file@percent }
-\newlabel{sec:main_results}{{4.2}{7}{Main Results}{subsection.4.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Ablation Study}{7}{subsection.4.3}\protected@file@percent }
-\newlabel{sec:ablation}{{4.3}{7}{Ablation Study}{subsection.4.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Training configuration of the trainable modules in our framework.}}{8}{table.1}\protected@file@percent }
+\newlabel{tab:module_training}{{1}{8}{Training configuration of the trainable modules in our framework}{table.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Main Results}{8}{subsection.4.2}\protected@file@percent }
+\newlabel{sec:main_results}{{4.2}{8}{Main Results}{subsection.4.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Ablation Study}{8}{subsection.4.3}\protected@file@percent }
+\newlabel{sec:ablation}{{4.3}{8}{Ablation Study}{subsection.4.3}{}}
 \bibstyle{elsarticle-num}
 \bibdata{content/refs}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Results on NExT-GQA. PT denotes trained/pretrained models, and TF denotes training-free models. Best results are in bold.}}{9}{table.2}\protected@file@percent }
+\newlabel{tab:nextgqa_results}{{2}{9}{Results on NExT-GQA. PT denotes trained/pretrained models, and TF denotes training-free models. Best results are in bold}{table.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Results on ReXTime. FT indicates the fine-tuned setting reported by prior work. Best results are in bold.}}{9}{table.3}\protected@file@percent }
+\newlabel{tab:rextime_results}{{3}{9}{Results on ReXTime. FT indicates the fine-tuned setting reported by prior work. Best results are in bold}{table.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Ablation results on ReXTime. Ref, Ret, Val, and Gen denote Refiner, Retriever, Validator, and Generator, respectively. The Generator-only variant does not produce temporal evidence spans, so grounding metrics are not reported.}}{9}{table.4}\protected@file@percent }
+\newlabel{tab:ablation_rextime_modules}{{4}{9}{Ablation results on ReXTime. Ref, Ret, Val, and Gen denote Refiner, Retriever, Validator, and Generator, respectively. The Generator-only variant does not produce temporal evidence spans, so grounding metrics are not reported}{table.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion}{9}{section.5}\protected@file@percent }
+\newlabel{sec:conclusion}{{5}{9}{Conclusion}{section.5}{}}
 \bibcite{xiao2024can}{{1}{}{{}}{{}}}
 \bibcite{chen2024rextime}{{2}{}{{}}{{}}}
 \bibcite{tang2025video}{{3}{}{{}}{{}}}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Ablation results on ReXTime. Ref, Ret, Val, and Gen denote Refiner, Retriever, Validator, and Generator, respectively. The Generator-only variant does not produce temporal evidence spans, so grounding metrics are not reported.}}{8}{table.4}\protected@file@percent }
-\newlabel{tab:ablation_rextime_modules}{{4}{8}{Ablation results on ReXTime. Ref, Ret, Val, and Gen denote Refiner, Retriever, Validator, and Generator, respectively. The Generator-only variant does not produce temporal evidence spans, so grounding metrics are not reported}{table.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion}{8}{section.5}\protected@file@percent }
 \bibcite{wu2025survey_vtg_mllm}{{4}{}{{}}{{}}}
 \bibcite{huang2024vtimellm}{{5}{}{{}}{{}}}
 \bibcite{ren2024timechat}{{6}{}{{}}{{}}}
@@ -140,12 +145,13 @@
 \bibcite{kahatapitiya2025language}{{18}{}{{}}{{}}}
 \bibcite{qian2024streaming}{{19}{}{{}}{{}}}
 \bibcite{zhao2025videoexpert}{{20}{}{{}}{{}}}
-\bibcite{wang2024qwen2}{{21}{}{{}}{{}}}
-\bibcite{yang2022zero}{{22}{}{{}}{{}}}
-\bibcite{yan2025tpo}{{23}{}{{}}{{}}}
-\bibcite{wang2024hawkeye}{{24}{}{{}}{{}}}
-\bibcite{qin2025question_answering_dense_video_events}{{25}{}{{}}{{}}}
+\bibcite{shao2024deepseekmath}{{21}{}{{}}{{}}}
+\bibcite{wang2024qwen2}{{22}{}{{}}{{}}}
+\bibcite{yang2022zero}{{23}{}{{}}{{}}}
+\bibcite{yan2025tpo}{{24}{}{{}}{{}}}
+\bibcite{wang2024hawkeye}{{25}{}{{}}{{}}}
+\bibcite{qin2025question_answering_dense_video_events}{{26}{}{{}}{{}}}
 \providecommand\NAT@force@numbers{}\NAT@force@numbers
-\newlabel{lastpage}{{5}{9}{Acknowledgements}{section*.2}{}}
-\gdef\svg@ink@ver@settings{{\m@ne }{inkscape}{\m@ne }}
-\gdef \@abspage@last{9}
+\newlabel{lastpage}{{5}{11}{Acknowledgements}{section*.2}{}}
+\gdef\svg@ink@ver@settings{{\m@ne }{inkscape}{1}}
+\gdef \@abspage@last{11}

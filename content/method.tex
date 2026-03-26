@@ -1,45 +1,65 @@
-\subsection{Overview}
+\subsection{General}
 \label{sec:method_overview}
 
 Given a video $V$, a question $q$, and a set of answer candidates $\mathcal{O}=\{o_i\}_{i=1}^{N}$, temporally grounded VideoQA aims to predict not only the correct answer $\hat{y}$ but also the temporal evidence $\hat{s}$ that supports the prediction \cite{xiao2024can,chen2024rextime}. In the current benchmark setting studied in this paper, the answer space is multiple-choice. EviR addresses a key mismatch in grounded VideoQA: the available language input for answering is written for discrimination, while temporal retrieval requires evidence-oriented queries. To bridge this gap, \emph{EviR} decomposes the pipeline into four components: a \emph{Refiner}, a \emph{Retriever}, a \emph{Validator}, and a \emph{Generator}.
 
 For each answer candidate, the Refiner first rewrites it into a grounding-friendly query. The Retriever then localizes top-$K$ candidate temporal spans for each refined query. Next, the Validator evaluates all retrieved clips and assigns them validation scores. Finally, the Generator predicts the answer conditioned on the highest-ranked evidence rather than the entire video. In EviR, this decomposition separates evidence acquisition from evidence validation and answer generation, allowing each component to focus on a dedicated role. Although the present implementation is answer-candidate driven, the same framework structure can be extended to other grounded VideoQA settings by replacing the reformulation input.
 
+Figure~\ref{fig:evir_overview} presents the overall pipeline. The framework first converts discrimination-oriented answer text into retrieval-friendly evidence queries, then retrieves and validates candidate temporal spans before final grounded answer generation.
+
+\begin{figure}[t]
+    \centering
+    \includesvg[width=\linewidth]{figures/figure1_overview_pipeline}
+    \caption{Overview of EviR. The framework reformulates answer candidates into evidence queries, retrieves candidate temporal spans, validates their evidence reliability, and predicts the final answer from the highest-ranked evidence clip.}
+    \label{fig:evir_overview}
+\end{figure}
+
 \subsection{Refiner}
 \label{sec:refiner}
 
 A key challenge in multiple-choice grounded VideoQA is that raw answer candidates are often not ideal temporal retrieval queries. They are typically written for answer discrimination rather than evidence localization, and may be too abstract, incomplete, or weakly visual to retrieve the correct temporal segment. This issue is particularly severe in grounded VideoQA, where answer correctness depends on accurate evidence localization \cite{xiao2024can,chen2024rextime}.
 
-To address this problem, we introduce a query refinement stage. Given a question $q$ and an answer candidate $o_i$, we use Gemini 2.5 Flash to rewrite the candidate into a grounding-friendly query:
+To address this problem, we introduce a query refinement stage. Given a question $q$ and an answer candidate $o_i$, we use Gemini 2.5 Flash to rewrite the candidate into a grounding-friendly query
 \begin{equation}
 r_i = \mathcal{F}_{\text{ref}}(q, o_i).
 \end{equation}
-The goal of this step is to preserve the semantics of the answer candidate while making the underlying visual evidence more explicit. In practice, the Refiner transforms answer candidates from decision-oriented text into retrieval-oriented text, enabling the downstream Retriever to focus on visually localizable events rather than abstract answer semantics.
+\noindent where $\mathcal{F}_{\text{ref}}$ denotes the Refiner. The goal of this step is to preserve the semantics of the answer candidate while making the underlying visual evidence more explicit. In practice, the Refiner transforms answer candidates from decision-oriented text into retrieval-oriented text, enabling the downstream Retriever to focus on visually localizable events rather than abstract answer semantics.
 
 This design is especially helpful for causal and reasoning-across-time questions. In such cases, an answer candidate may refer to an inferred event or a temporally displaced consequence rather than a directly observable moment. Query refinement helps expose the visual evidence that should be retrieved before final answer generation. The Refiner is used as an off-the-shelf query rewriting module and is not further trained in our framework. The Refiner is a modular component and can be replaced by other LLMs.
 
 \subsection{Retriever}
 \label{sec:retriever}
 
-Given a refined query $r_i$, the Retriever localizes the top-$K$ candidate temporal spans
+Given a refined query $r_i$, the Retriever localizes the top-$K$ candidate temporal spans in video $V$ as
 \begin{equation}
 \{s_{i,k}\}_{k=1}^{K} = \mathcal{F}_{\text{ret}}(V, r_i),
 \end{equation}
-where each candidate span is represented as
+where $\mathcal{F}_{\text{ret}}$ denotes the Retriever and each candidate span is represented as
 \begin{equation}
 s_{i,k} = [t^{s}_{i,k}, t^{e}_{i,k}],
 \end{equation}
-with $t^{s}_{i,k}$ and $t^{e}_{i,k}$ denoting the predicted start and end timestamps. The corresponding retrieved clips are denoted by
+with $t^{s}_{i,k}$ and $t^{e}_{i,k}$ denoting the predicted start and end timestamps, respectively. The corresponding retrieved clips are defined as
 \begin{equation}
 c_{i,k} = V[s_{i,k}], \qquad k = 1, \dots, K.
 \end{equation}
+In all experiments, $K=2$ unless otherwise stated.
 
-In our framework, the Retriever is initialized from Qwen3-VL-8B and fine-tuned for video temporal grounding on the TimeLens-100K dataset \cite{zhang2026timelens}. Following TimeLens, temporal information is injected through \emph{interleaved textual timestamp encoding}, where timestamps are inserted as text tokens alongside the visual sequence. This design improves alignment between language queries and temporally grounded visual evidence.
+The Retriever is initialized from Qwen3-VL-8B and fine-tuned for video temporal grounding on TimeLens-100K~\cite{zhang2026timelens}. Following TimeLens, temporal information is injected via \emph{interleaved textual timestamp encoding}, where timestamps are inserted as text tokens into the multimodal input sequence. The released TimeLens-8B training recipe is adopted, including supervised fine-tuning (SFT) on 30K sampled instances, offline filtering with duration-aware Gaussian resampling based on offline IoU scores, and GRPO~\cite{shao2024deepseekmath} with temporal-IoU reward.
 
-The Retriever is trained with a three-stage pipeline. First, a supervised fine-tuning (SFT) warm-start is performed on 30K sampled instances from TimeLens-100K to initialize temporal grounding ability. Second, the SFT checkpoint is used to run offline inference on the full TimeLens-100K set, and the predicted spans are filtered according to temporal overlap quality. Third, the model is further optimized with GRPO under a thinking-free RLVR paradigm, where the reward is defined based on temporal localization quality. This training strategy improves the precision and reliability of temporal span prediction.
+During SFT, the Retriever is trained to autoregressively generate timestamp-formatted outputs. Given the target sequence $y_i^\ast$, the supervised objective is
+\begin{equation}
+\mathcal{L}_{\mathrm{SFT}}
+= - \sum_t \log p_\theta \bigl(y^\ast_{i,t} \mid V, r_i, y^\ast_{i,<t}\bigr).
+\end{equation}
 
-In our setting, the Retriever is applied to the refined queries produced from the answer candidates. For each refined query $r_i$, it returns candidate temporal spans that may serve as supporting evidence for answering the question. This design allows retrieval to operate on evidence-oriented reformulations rather than raw answer options, thereby improving the compatibility between temporal grounding and multiple-choice grounded VideoQA. 
+During GRPO, the model samples $G$ span predictions for each training instance and assigns each prediction a reward according to its temporal overlap with the ground-truth span $s_i^\ast$:
+\begin{equation}
+R_{i,g} = \operatorname{tIoU}(\hat{s}_{i,g}, s_i^\ast), \qquad
+A_{i,g} = R_{i,g} - \frac{1}{G}\sum_{g'=1}^{G} R_{i,g'} ,
+\end{equation}
+where $\hat{s}_{i,g}$ denotes the $g$-th sampled span, $R_{i,g}$ is its temporal-IoU reward, $A_{i,g}$ is the group-relative advantage, and $G$ is the number of sampled completions.
 
+At inference time, the Retriever is applied to refined queries derived from answer candidates and returns candidate temporal spans as supporting evidence for downstream reasoning. This design enables evidence retrieval to operate on reformulated queries that are more closely aligned with the target visual evidence than raw answer options.
 
 
 \subsection{Validator}
@@ -55,7 +75,8 @@ where $c_{i,k}$ denotes the $k$-th candidate clip associated with the $i$-th que
 \begin{equation}
 \alpha_{i,k} = \mathcal{F}_{\text{val}}(q, c_{i,k}),
 \end{equation}
-which measures how likely the candidate is to constitute faithful evidence for answering $q$. These scores induce a ranking over all retrieved candidates, which is then used by the Generator.
+\noindent
+where $\mathcal{F}_{\text{val}}$ denotes the Validator. The score $\alpha_{i,k}$ measures how likely the candidate is to constitute faithful evidence for answering $q$. These scores induce a ranking over all retrieved candidates, which is then used by the Generator.
 
 Our Validator follows the \textbf{verifier} design of VideoMind \cite{liu2025videomind}. For each candidate clip, we adopt a \emph{zoom-in} strategy by expanding its temporal boundaries by 50\% on both sides and cropping the enlarged segment as input. Two special tokens, \texttt{<SEG-START>} and \texttt{<SEG-END>}, are inserted at the temporal positions corresponding to the original candidate boundaries, allowing the model to distinguish the hypothesized evidence span from its surrounding temporal context \cite{liu2025videomind}.
 
@@ -87,7 +108,8 @@ and predicts the final answer conditioned on the question, the answer candidates
 \begin{equation}
 \hat{y} = \mathcal{F}_{\text{gen}}(q, \mathcal{O}, \tilde{c}).
 \end{equation}
+\noindent where $\mathcal{F}_{\text{gen}}$ denotes the Generator.
 
 While the Validator ranks the retrieved candidates by reliability, evidence ranking alone is not sufficient for final answer prediction. In grounded multiple-choice VideoQA, multiple answer candidates may correspond to visually similar or temporally overlapping events, so the highest-ranked evidence does not always map uniquely to a single answer option. The role of the Generator is therefore to resolve this ambiguity by performing semantic reasoning over the selected evidence together with the question and the candidate answers.
 
-In our implementation, the Generator is based on \textbf{Qwen2-VL} \cite{wang2024qwen2} and is used without additional task-specific training. Unlike the Retriever and Validator, which are explicitly optimized for evidence acquisition and evidence validation, respectively, the Generator serves as the final multimodal reasoning module. Conditioning the Generator on the highest-ranked evidence rather than the full video encourages grounded prediction and reduces distraction from irrelevant visual context, which is particularly important for long-video reasoning and grounded VideoQA \cite{xiao2024can,liu2025videomind}.
+In our implementation, the Generator is based on Qwen2-VL \cite{wang2024qwen2} and is used without additional task-specific training. Unlike the Retriever and Validator, which are explicitly optimized for evidence acquisition and evidence validation, respectively, the Generator serves as the final multimodal reasoning module. Conditioning the Generator on the highest-ranked evidence rather than the full video encourages grounded prediction and reduces distraction from irrelevant visual context, which is particularly important for long-video reasoning and grounded VideoQA \cite{xiao2024can,liu2025videomind}.
