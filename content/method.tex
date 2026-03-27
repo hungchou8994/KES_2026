@@ -9,7 +9,7 @@ Figure~\ref{fig:evir_overview} presents the overall pipeline. The framework firs
 
 \begin{figure}[t]
     \centering
-    \includesvg[width=\linewidth]{figures/figure1_overview_pipeline}
+    \includesvg[width=0.95\linewidth]{figures/figure1_overview_pipeline}
     \caption{Overview of EviR. The framework reformulates answer candidates into evidence queries, retrieves candidate temporal spans, validates their evidence reliability, and predicts the final answer from the highest-ranked evidence clip.}
     \label{fig:evir_overview}
 \end{figure}
@@ -19,13 +19,13 @@ Figure~\ref{fig:evir_overview} presents the overall pipeline. The framework firs
 
 A key challenge in multiple-choice grounded VideoQA is that raw answer candidates are often not ideal temporal retrieval queries. They are typically written for answer discrimination rather than evidence localization, and may be too abstract, incomplete, or weakly visual to retrieve the correct temporal segment. This issue is particularly severe in grounded VideoQA, where answer correctness depends on accurate evidence localization \cite{xiao2024can,chen2024rextime}.
 
-To address this problem, we introduce a query refinement stage. Given a question $q$ and an answer candidate $o_i$, we use Gemini 2.5 Flash to rewrite the candidate into a grounding-friendly query
+To address this problem, a query refinement stage is introduced. Given a question $q$ and an answer candidate $o_i$, Gemini 2.5 Flash is used to rewrite the candidate into a grounding-friendly query
 \begin{equation}
 r_i = \mathcal{F}_{\text{ref}}(q, o_i).
 \end{equation}
 \noindent where $\mathcal{F}_{\text{ref}}$ denotes the Refiner. The goal of this step is to preserve the semantics of the answer candidate while making the underlying visual evidence more explicit. In practice, the Refiner transforms answer candidates from decision-oriented text into retrieval-oriented text, enabling the downstream Retriever to focus on visually localizable events rather than abstract answer semantics.
 
-This design is especially helpful for causal and reasoning-across-time questions. In such cases, an answer candidate may refer to an inferred event or a temporally displaced consequence rather than a directly observable moment. Query refinement helps expose the visual evidence that should be retrieved before final answer generation. The Refiner is used as an off-the-shelf query rewriting module and is not further trained in our framework. The Refiner is a modular component and can be replaced by other LLMs.
+This design is especially helpful for causal and reasoning-across-time questions. In such cases, an answer candidate may refer to an inferred event or a temporally displaced consequence rather than a directly observable moment. Query refinement helps expose the visual evidence that should be retrieved before final answer generation. The Refiner is used as an off-the-shelf query rewriting module and is not further trained in the framework. The Refiner is a modular component and can be replaced by other LLMs.
 
 \subsection{Retriever}
 \label{sec:retriever}
@@ -65,9 +65,9 @@ At inference time, the Retriever is applied to refined queries derived from answ
 \subsection{Validator}
 \label{sec:validator}
 
-The Retriever returns a set of candidate evidence clips, but not every retrieved candidate is equally reliable for grounded reasoning. In grounded VideoQA, a candidate segment may be temporally close to the target event while still being weakly informative, noisy, or only partially aligned with the evidence required to answer the question. To improve the reliability of downstream reasoning, we introduce a \emph{Validator} that verifies the retrieved candidates and assigns each one a score indicating how likely it is to serve as faithful evidence.
+The Retriever returns a set of candidate evidence clips, but not every retrieved candidate is equally reliable for grounded reasoning. In grounded VideoQA, a candidate segment may be temporally close to the target event while still being weakly informative, noisy, or only partially aligned with the evidence required to answer the question. To improve the reliability of downstream reasoning, a \emph{Validator} is introduced to verify the retrieved candidates and assign each one a score indicating how likely it is to serve as faithful evidence.
 
-We denote the pool of candidate clips returned by the Retriever as
+The pool of candidate clips returned by the Retriever is denoted as
 \begin{equation}
 \mathcal{C}=\{c_{i,k}\mid i=1,\dots,N;\;k=1,\dots,K\},
 \end{equation}
@@ -78,11 +78,11 @@ where $c_{i,k}$ denotes the $k$-th candidate clip associated with the $i$-th que
 \noindent
 where $\mathcal{F}_{\text{val}}$ denotes the Validator. The score $\alpha_{i,k}$ measures how likely the candidate is to constitute faithful evidence for answering $q$. These scores induce a ranking over all retrieved candidates, which is then used by the Generator.
 
-Our Validator follows the \textbf{verifier} design of VideoMind \cite{liu2025videomind}. For each candidate clip, we adopt a \emph{zoom-in} strategy by expanding its temporal boundaries by 50\% on both sides and cropping the enlarged segment as input. Two special tokens, \texttt{<SEG-START>} and \texttt{<SEG-END>}, are inserted at the temporal positions corresponding to the original candidate boundaries, allowing the model to distinguish the hypothesized evidence span from its surrounding temporal context \cite{liu2025videomind}.
+The Validator follows the \textbf{verifier} design of VideoMind \cite{liu2025videomind}. For each candidate clip, a \emph{zoom-in} strategy is adopted by expanding its temporal boundaries by 50\% on both sides and cropping the enlarged segment as input. Two special tokens, \texttt{<SEG-START>} and \texttt{<SEG-END>}, are inserted at the temporal positions corresponding to the original candidate boundaries, allowing the model to distinguish the hypothesized evidence span from its surrounding temporal context \cite{liu2025videomind}.
 
-We formulate validation as a binary verification task. During training, each candidate is assigned a binary label according to its temporal overlap with the annotated evidence span: candidates with Intersection-over-Union (IoU) greater than 0.5 are treated as positive, and the others as negative, following \cite{liu2025videomind}. The Validator is then fine-tuned to predict whether the highlighted segment should be accepted (\texttt{Yes}) or rejected (\texttt{No}) as valid evidence for the question.
+Validation is formulated as a binary verification task. During training, each candidate is assigned a binary label according to its temporal overlap with the annotated evidence span: candidates with Intersection-over-Union (IoU) greater than 0.5 are treated as positive, and the others as negative, following \cite{liu2025videomind}. The Validator is then fine-tuned to predict whether the highlighted segment should be accepted (\texttt{Yes}) or rejected (\texttt{No}) as valid evidence for the question.
 
-During inference, for each candidate clip, we compute the logits of the \texttt{<Yes>} and \texttt{<No>} tokens under teacher forcing, denoted by $L_y$ and $L_n$, respectively. The validation score is defined as
+During inference, the logits of the \texttt{<Yes>} and \texttt{<No>} tokens are computed under teacher forcing for each candidate clip and denoted by $L_y$ and $L_n$, respectively. The validation score is defined as
 \begin{equation}
 \alpha_{i,k} = \sigma(L_y - L_n),
 \end{equation}
@@ -112,4 +112,4 @@ and predicts the final answer conditioned on the question, the answer candidates
 
 While the Validator ranks the retrieved candidates by reliability, evidence ranking alone is not sufficient for final answer prediction. In grounded multiple-choice VideoQA, multiple answer candidates may correspond to visually similar or temporally overlapping events, so the highest-ranked evidence does not always map uniquely to a single answer option. The role of the Generator is therefore to resolve this ambiguity by performing semantic reasoning over the selected evidence together with the question and the candidate answers.
 
-In our implementation, the Generator is based on Qwen2-VL \cite{wang2024qwen2} and is used without additional task-specific training. Unlike the Retriever and Validator, which are explicitly optimized for evidence acquisition and evidence validation, respectively, the Generator serves as the final multimodal reasoning module. Conditioning the Generator on the highest-ranked evidence rather than the full video encourages grounded prediction and reduces distraction from irrelevant visual context, which is particularly important for long-video reasoning and grounded VideoQA \cite{xiao2024can,liu2025videomind}.
+In the current implementation, the Generator is based on Qwen2-VL \cite{wang2024qwen2} and is used without additional task-specific training. Unlike the Retriever and Validator, which are explicitly optimized for evidence acquisition and evidence validation, respectively, the Generator serves as the final multimodal reasoning module. Conditioning the Generator on the highest-ranked evidence rather than the full video encourages grounded prediction and reduces distraction from irrelevant visual context, which is particularly important for long-video reasoning and grounded VideoQA \cite{xiao2024can,liu2025videomind}.
